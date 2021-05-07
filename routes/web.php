@@ -86,9 +86,52 @@ Route::get('/about', function () {
 });
 
 
+Auth::routes(['verify' => true]);
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('verified');
 
 
-Auth::routes(['verify'=>true]);
+Route::get('fillable', 'CrudController@getOffers');
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('verified');
-    
+//Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function () {
+/*
+Route::group(['prefix' => 'offers'], function () {
+    //  Route::get('createOffer', 'CrudController@createOffer');
+    Route::get('create', 'CrudController@create');
+    Route::post('store', 'CrudController@store')->name('offers.store');
+
+});
+*/
+//});
+
+/*
+Route::group(
+    [
+        'prefix' => \Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
+        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
+    ], function () {
+    Route::group(['prefix' => 'offers'], function () {
+        //  Route::get('createOffer', 'CrudController@createOffer');
+        Route::get('create', 'CrudController@create');
+        Route::post('store', 'CrudController@store')->name('offers.store');
+    });
+});
+*/
+
+Route::group(['prefix' => LaravelLocalization::setLocale(),], function () {
+
+    Route::group(['prefix' => 'offers'], function () {
+        //   Route::get('store', 'CrudController@store');
+        Route::get('create', 'CrudController@create');
+        Route::get('all', 'CrudController@getOffers')->name('offers.all');
+
+        Route::get('edit/{offer_id}', 'CrudController@editOffer');
+        Route::get('delete/{offer_id}', 'CrudController@deleteOffer')->name('offers.delete');
+        Route::post('update/{offer_id}', 'CrudController@updateOffer')->name('offers.update');
+
+
+        Route::post('store', 'CrudController@store')->name('offers.store');
+    });
+
+    Route::get('youtube', 'CrudController@getVideo')->name('youtube');
+});

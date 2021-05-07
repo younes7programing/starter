@@ -34,6 +34,13 @@
 <!-- Copyright Section-->
 <div class="copyright py-4 text-center text-white">
     <div class="container"><small>Copyright © Your Website 2020</small></div>
+
+    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+        <a class="nav-link"
+           href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"> {{ $properties['native'] }}
+            <span class="sr-only">(current)</span>
+        </a>
+    @endforeach
 </div>
 <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
 <div class="scroll-to-top d-lg-none position-fixed">
